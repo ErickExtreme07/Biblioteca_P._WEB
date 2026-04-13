@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Biblioteca</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
+</head>
+<body class="container py-5">
+    <div class="card shadow mx-auto" style="max-width: 500px;">
+        <div class="card-body">
+            <h3>{{ 'Editar' if libro else 'Agregar' }} Libro</h3>
+            <hr>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Título</label>
+                    <input type="text" name="titulo" class="form-control" value="{{ libro.titulo if libro else '' }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Autor</label>
+                    <input type="text" name="autor" class="form-control" value="{{ libro.autor if libro else '' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Género</label>
+                    <input type="text" name="genero" class="form-control" value="{{ libro.genero if libro else '' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Estado (Ej: Leído, No leído)</label>
+                    <input type="text" name="estado" class="form-control" value="{{ libro.estado if libro else '' }}">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Guardar Cambios</button>
+                <a href="/" class="btn btn-link w-100 mt-2 text-decoration-none">Regresar</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

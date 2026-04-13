@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Pro</title>
+    <!-- Bootstrap 5 CSS con enlace de respaldo -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #1a252f;
+            --accent-color: #3498db;
+        }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        /* Navbar estilizada */
+        .navbar { background-color: var(--primary-dark) !important; padding: 1rem; }
+        .navbar-brand { font-weight: bold; color: white !important; }
+
+        /* Botón agregar */
+        .btn-add {
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 8px 20px;
+        }
+        .btn-add:hover { background-color: #2980b9; color: white; }
+
+        /* Contenedor de búsqueda */
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-top: -30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Tarjetas de libros */
+        .book-card {
+            border: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--accent-color);
+        }
+        .book-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+
+        .empty-state { padding: 80px 20px; text-align: center; color: #95a5a6; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg mb-5">
+    <div class="container">
+        <span class="navbar-brand">📚 Biblioteca Personal Pro</span>
+        <a href="/agregar" class="btn-add">+ Agregar Nuevo Libro</a>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- Barra de Búsqueda -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-10">
+            <div class="search-container">
+                <form action="/buscar" method="GET" class="row g-3">
+                    <div class="col-md-3">
+                        <select name="criterio" class="form-select border-0 bg-light">
+                            <option value="titulo">Título</option>
+                            <option value="autor">Autor</option>
+                            <option value="genero">Género</option>
+                        </select>
+                    </div>
+                    <div class="col-md-7">
+                        <input type="text" name="valor" class="form-control border-0 bg-light" placeholder="¿Qué libro buscas hoy?">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-dark w-100">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Libros -->
+    <div class="row g-4">
+        {% for libro in libros %}
+        <div class="col-md-4">
+            <div class="card h-100 book-card shadow-sm">
+                <div class="card-body">
+                    <div class="mb-2">
+                        <span class="badge {% if 'leído' in libro.estado.lower() %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                            {{ libro.estado }}
+                        </span>
+                    </div>
+                    <h5 class="card-title fw-bold">{{ libro.titulo }}</h5>
+                    <p class="card-text text-muted mb-1"><strong>Autor:</strong> {{ libro.autor }}</p>
+                    <p class="card-text text-muted small"><strong>Género:</strong> {{ libro.genero }}</p>
+                </div>
+                <div class="card-footer bg-white border-0 d-flex justify-content-between pb-3">
+                    <a href="/editar/{{ libro.id }}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    <a href="/eliminar/{{ libro.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar libro?')">Eliminar</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Estado Vacío -->
+        <div class="col-12 empty-state">
+            <img src="https://flaticon.com" width="100" class="mb-3" style="opacity: 0.2;">
+            <h3>No hay libros en tu estante</h3>
+            <p>Tu biblioteca está lista para crecer. ¡Añade tu primer ejemplar!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://jsdelivr.net"></script>
+</body>
+</html>
